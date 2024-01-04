@@ -51,6 +51,7 @@ export default {
   'menu.editor.koni': 'Koni Editor',
   'menu.components': 'Components',
   'menu.components.api': 'Dynamic API',
+  'menu.components.menu': 'Menus',
   'menu.components.parameter': 'Parameter',
   'menu.components.oss': 'Files',
   'menu.components.oss.test': 'File Test',

@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 @Configuration
 public class MenuDomainConfiguration {
 
@@ -35,7 +37,12 @@ public class MenuDomainConfiguration {
             }
 
             @Override
-            public Menu getParam(String code) {
+            public List<Menu> findAll() {
+                return null;
+            }
+
+            @Override
+            public Menu tree() {
                 return null;
             }
         };

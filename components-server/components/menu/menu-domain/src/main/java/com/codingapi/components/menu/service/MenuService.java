@@ -21,7 +21,6 @@ public class MenuService {
         menuRepository.save(menu);
     }
 
-
     public Page<Menu> list(PageRequest request) {
         request.addSort(Sort.by("sort").ascending());
         return menuRepository.list(request);

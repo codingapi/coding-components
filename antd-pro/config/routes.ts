@@ -62,6 +62,11 @@ export default [
         component: './components/parameter',
       },
       {
+        name: 'menu',
+        path: '/components/menu',
+        component: './components/menu',
+      },
+      {
         path: '/components/api',
         name: 'api',
         component: './components/api',

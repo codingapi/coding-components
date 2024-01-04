@@ -6,6 +6,9 @@ import com.codingapi.components.menu.repository.MenuRepository;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 @AllArgsConstructor
 public class MenuRepositoryImpl implements MenuRepository {
@@ -28,7 +31,24 @@ public class MenuRepositoryImpl implements MenuRepository {
     }
 
     @Override
-    public Menu getParam(String code) {
-        return jpaParameterRepository.getParameterByCode(code);
+    public List<Menu> findAll() {
+        return jpaParameterRepository.findAll(Sort.by("sort").ascending());
+    }
+
+    @Override
+    public Menu tree() {
+        List<Menu> list = findAll();
+        Menu root = Menu.root();
+        fetchChildren(root, list);
+        return root;
+    }
+
+    private void fetchChildren(Menu parent, List<Menu> typeList) {
+        for (Menu type : typeList) {
+            if (type.getParentId() == parent.getId()) {
+                parent.addChild(type);
+                fetchChildren(type, typeList);
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.codingapi.components.menu.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class Menu {
+public class Menu extends Tree<Menu> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,31 +20,20 @@ public class Menu {
     @Column(unique = true)
     private String code;
 
-    private String value;
+    private String icon;
 
-    @Column(length = 200)
-    private String description;
+    @ManyToOne
+    private Menu parent;
 
-    private String unit;
-
-
-    @JsonIgnore
-    public int getIntValue() {
-        return Integer.parseInt(value);
+    public static Menu root() {
+        Menu root = new Menu();
+        root.setId(0);
+        root.setName("所有菜单");
+        return root;
     }
 
-    @JsonIgnore
-    public long getLongValue() {
-        return Long.getLong(value);
-    }
-
-    @JsonIgnore
-    public double getDoubleValue() {
-        return Double.parseDouble(value);
-    }
-
-    @JsonIgnore
-    public float getFloatValue() {
-        return Float.parseFloat(value);
+    @Override
+    public int getParentId() {
+        return parent != null ? parent.getId() : 0;
     }
 }

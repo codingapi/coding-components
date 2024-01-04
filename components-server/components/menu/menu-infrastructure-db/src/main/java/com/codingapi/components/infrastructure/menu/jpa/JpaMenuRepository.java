@@ -5,5 +5,5 @@ import com.codingapi.springboot.fast.jpa.repository.FastRepository;
 
 public interface JpaMenuRepository extends FastRepository<Menu,Integer> {
 
-    Menu getParameterByCode(String code);
+    Menu getMenuByCode(String code);
 }

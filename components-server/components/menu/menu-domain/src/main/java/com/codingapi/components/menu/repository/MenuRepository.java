@@ -4,6 +4,8 @@ import com.codingapi.components.menu.domain.Menu;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface MenuRepository {
 
     void save(Menu menu);
@@ -12,6 +14,7 @@ public interface MenuRepository {
 
     Page<Menu> list(PageRequest request);
 
-    Menu getParam(String code);
+    List<Menu> findAll();
 
+    Menu tree();
 }
