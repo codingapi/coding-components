@@ -4,7 +4,7 @@ hero:
   description: codingapi-components,一个基于组件领域化开发的开源平台
   actions:
     - text: GitHub
-      link: https://github.com/xlorne/ui
+      link: https://github.com/codingapi/codingapi-components
 features:
   - title: 领域化
     emoji: 💎

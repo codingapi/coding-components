@@ -22,7 +22,7 @@ order: 3
 
 ## clone 代码
 ```shell
-git clone git@github.com:xlorne/ui.git
+git clone git@github.com:codingapi/coding-components.git
 ```
 ### 添加私有仓库的账户配置
 ```shell
