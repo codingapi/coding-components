@@ -4,11 +4,12 @@ import com.codingapi.components.menu.domain.Menu;
 import com.codingapi.components.menu.repository.MenuRepository;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 @AllArgsConstructor
-public class MenuService {
+public class MenuService implements InitializingBean {
 
     private final MenuRepository menuRepository;
 
@@ -24,5 +25,10 @@ public class MenuService {
     public Page<Menu> list(PageRequest request) {
         request.addSort(Sort.by("sort").ascending());
         return menuRepository.list(request);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        menuRepository.save(Menu.root());
     }
 }

@@ -1,13 +1,17 @@
 package com.codingapi.components.menu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
-public class Menu extends Tree<Menu> {
+public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +26,9 @@ public class Menu extends Tree<Menu> {
 
     private String icon;
 
-    private Integer parentId;
+    @ManyToOne
+    @JsonIgnore
+    private Menu parent;
 
     public static Menu root() {
         Menu root = new Menu();
@@ -32,6 +38,17 @@ public class Menu extends Tree<Menu> {
     }
 
     public int parentId() {
-        return parentId==null?0:parentId;
+        return parent == null ? 0 : parent.getId();
     }
+
+    @Transient
+    protected List<Menu> children;
+
+    public void addChild(Menu child) {
+        if (children == null) {
+            this.children = new ArrayList<>();
+        }
+        children.add(child);
+    }
+
 }

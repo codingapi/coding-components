@@ -43,11 +43,11 @@ public class MenuRepositoryImpl implements MenuRepository {
         return root;
     }
 
-    private void fetchChildren(Menu parent, List<Menu> typeList) {
-        for (Menu type : typeList) {
-            if (parent.getId() == type.parentId()) {
-                parent.addChild(type);
-                fetchChildren(type, typeList);
+    private void fetchChildren(Menu parent, List<Menu> menuList) {
+        for (Menu menu : menuList) {
+            if (menu.parentId() == parent.getId()) {
+                parent.addChild(menu);
+                fetchChildren(menu, menuList);
             }
         }
     }
