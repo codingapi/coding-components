@@ -1,7 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import {request} from '@umijs/max';
-
+import {get, post} from "@/services/api/index";
 
 export async function list(
   params: {
@@ -13,37 +12,17 @@ export async function list(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.Response<any>>('/api/parameter/list', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
+  return get('/api/parameter/list', params);
 }
 
 
-export async function save(body: Table.SaveCommand, options?: { [key: string]: any }) {
-  return request<API.Response<any>>('/api/parameter/save', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
+export async function save(body: any) {
+  return post('/api/parameter/save', body);
 }
 
 
 export async function del(body: {
   id:string,
-}, options?: { [key: string]: any }) {
-  return request<API.Response<any>>('/api/parameter/delete', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
+}) {
+  return post('/api/parameter/delete', body);
 }
