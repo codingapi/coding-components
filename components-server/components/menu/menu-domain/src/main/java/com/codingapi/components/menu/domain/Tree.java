@@ -21,5 +21,5 @@ public abstract class Tree<T> {
     }
 
     @JsonIgnore
-    public abstract int getParentId();
+    public abstract int parentId();
 }

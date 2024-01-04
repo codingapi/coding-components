@@ -1,9 +1,9 @@
 package com.codingapi.components.menu.config;
 
+import com.codingapi.components.menu.context.MenuContextRegister;
 import com.codingapi.components.menu.domain.Menu;
 import com.codingapi.components.menu.repository.MenuRepository;
 import com.codingapi.components.menu.service.MenuService;
-import com.codingapi.components.menu.context.MenuContextRegister;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -46,10 +46,6 @@ public class MenuDomainConfiguration {
                 return null;
             }
 
-            @Override
-            public void afterPropertiesSet() throws Exception {
-
-            }
         };
     }
 

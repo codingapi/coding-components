@@ -22,8 +22,7 @@ public class Menu extends Tree<Menu> {
 
     private String icon;
 
-    @ManyToOne
-    private Menu parent;
+    private Integer parentId;
 
     public static Menu root() {
         Menu root = new Menu();
@@ -32,8 +31,7 @@ public class Menu extends Tree<Menu> {
         return root;
     }
 
-    @Override
-    public int getParentId() {
-        return parent != null ? parent.getId() : 1;
+    public int parentId() {
+        return parentId==null?0:parentId;
     }
 }

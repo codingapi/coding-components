@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class MenuRepositoryImpl implements MenuRepository {
@@ -38,7 +37,7 @@ public class MenuRepositoryImpl implements MenuRepository {
 
     @Override
     public Menu tree() {
-        List<Menu> list = findAll().stream().filter(item->item.getParentId()!=1).collect(Collectors.toList());
+        List<Menu> list = findAll();
         Menu root = Menu.root();
         fetchChildren(root, list);
         return root;
@@ -46,15 +45,12 @@ public class MenuRepositoryImpl implements MenuRepository {
 
     private void fetchChildren(Menu parent, List<Menu> typeList) {
         for (Menu type : typeList) {
-            if (type.getParentId() == parent.getId()) {
+            if (parent.getId() == type.parentId()) {
                 parent.addChild(type);
                 fetchChildren(type, typeList);
             }
         }
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        jpaParameterRepository.save(Menu.root());
-    }
+
 }
