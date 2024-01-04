@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+  verdaccio:
+    image: verdaccio/verdaccio:5
+    container_name: verdaccio
+    restart: always
+    ports:
+      - "4873:4873"
+    volumes:
+      - "./verdaccio-data:/verdaccio/storage/"
+      - "./verdaccio-conf:/verdaccio/conf/"
+  nexus:
+    restart: always    
+    image: sonatype/nexus3
+    container_name: nexus3
+    volumes:
+      - "./nexus-data:/nexus-data"
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+  mysql:
+    image: mysql:8.2.0
+    container_name: mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - "./db-data:/var/lib/mysql"
+    environment:
+      TZ: "Asia/Shanghai"
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: components
+    restart: always
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=12345678 --execute \"SHOW DATABASES;\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
+  minio:
+    image: minio/minio:RELEASE.2023-04-20T17-56-55Z
+    container_name: minio
+    restart: always
+    expose:
+      - "9000"
+      - "9001"
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    environment:
+      TZ: "Asia/Shanghai"
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    volumes:
+      - "./minio-data:/data"
+    command: server /data --console-address ":9001"
