@@ -45,6 +45,11 @@ public class MenuDomainConfiguration {
             public Menu tree() {
                 return null;
             }
+
+            @Override
+            public void afterPropertiesSet() throws Exception {
+
+            }
         };
     }
 

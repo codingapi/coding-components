@@ -2,11 +2,12 @@ package com.codingapi.components.menu.repository;
 
 import com.codingapi.components.menu.domain.Menu;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface MenuRepository {
+public interface MenuRepository extends InitializingBean {
 
     void save(Menu menu);
 
@@ -17,4 +18,5 @@ public interface MenuRepository {
     List<Menu> findAll();
 
     Menu tree();
+
 }

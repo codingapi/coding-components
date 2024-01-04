@@ -27,13 +27,13 @@ public class Menu extends Tree<Menu> {
 
     public static Menu root() {
         Menu root = new Menu();
-        root.setId(0);
+        root.setId(1);
         root.setName("所有菜单");
         return root;
     }
 
     @Override
     public int getParentId() {
-        return parent != null ? parent.getId() : 0;
+        return parent != null ? parent.getId() : 1;
     }
 }
