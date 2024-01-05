@@ -35,6 +35,11 @@ sortable 是否支持开启排序功能，默认为关闭状态
 dragSortKey，onDragSortEnd 均为排序时支持的属性，dragSortKey是在开启排序时手动拖拽的字段。onDragSortEnd是排序完成以后的数据刷新更新操作。
 
 
+## 效果
+
+![index](/imgs/table/index.png)
+
+
 ## 实例代码如下
 
 ```ts

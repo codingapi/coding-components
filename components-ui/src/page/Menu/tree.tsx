@@ -2,20 +2,21 @@ import { Tree } from 'antd';
 import React, { useEffect, useImperativeHandle, useState, forwardRef } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { DataNode } from 'antd/es/tree';
-import { tree } from '@/services/api/menu';
 
 const { DirectoryTree } = Tree;
 interface MenuPageProps {
   onSelect?: (selectedKeys: React.Key[], info?: any) => void;
+
+  tree():Promise<any>;
 }
 
-const MenuTree = forwardRef((props: MenuPageProps, ref) => {
+export const MenuTree = forwardRef((props: MenuPageProps, ref) => {
 
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [defaultKeys, setSelectedKeys] = useState<React.Key[]>([1]);
 
   const refreshTree = () => {
-    tree().then(res => {
+    props.tree().then(res => {
       if (res['success']) {
         const data = res.data;
         const search = (data: any) => {
@@ -74,4 +75,3 @@ const MenuTree = forwardRef((props: MenuPageProps, ref) => {
 });
 
 
-export default MenuTree

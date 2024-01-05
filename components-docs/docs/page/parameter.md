@@ -36,6 +36,8 @@ public class Test {
 
 通过`ParameterContext.getInstance().getIntParam("test",1)`既可以获取参数，支持Float、Doule、Long、Int、String等常用的数据格式。
 
+后端更多使用说明见 [参数管理](/springboot/parameter)
+
 
 ## 安装
 

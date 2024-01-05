@@ -94,6 +94,13 @@ export default [
     ],
   },
   {
+    name: 'test',
+    icon: 'bug',
+    path: '/test',
+    component: './test',
+    access: 'hasAuthentication',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
