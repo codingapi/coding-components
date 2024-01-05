@@ -29,12 +29,13 @@ export default [
     name: 'welcome',
     icon: 'smile',
     component: './Welcome',
+    access: 'hasAuthentication',
   },
   {
     path: '/admin',
     name: 'admin',
     icon: 'crown',
-    access: 'isAdmin',
+    access: 'hasAuthentication',
     routes: [
       {
         path: '/admin',
@@ -52,36 +53,43 @@ export default [
     icon: 'table',
     path: '/list',
     component: './table',
+    access: 'hasAuthentication',
   },
   {
     name: 'components',
     icon: 'appstore',
     path: '/components',
+    access: 'hasAuthentication',
     routes: [
       {
         name: 'parameter',
         path: '/components/parameter',
         component: './components/parameter',
+        access: 'hasAuthentication',
       },
       {
         name: 'menu',
         path: '/components/menu',
         component: './components/menu',
+        access: 'hasAuthentication',
       },
       {
         path: '/components/api',
         name: 'api',
         component: './components/api',
+        access: 'hasAuthentication',
       },
       {
         path: '/components/oss',
         name: 'oss',
         component: './components/oss',
+        access: 'hasAuthentication',
       },
       {
         path: '/components/oss_test',
         name: 'oss.test',
         component: './components/oss/test',
+        access: 'hasAuthentication',
       },
     ],
   },

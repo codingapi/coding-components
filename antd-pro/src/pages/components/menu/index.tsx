@@ -30,6 +30,12 @@ const MenuPage: React.FC = () => {
     }
   };
 
+  const reloadTree = () => {
+    tree().then(res => {
+      setTreeData([res.data]);
+    })
+  }
+
 
   const handleDel = async (id: string) => {
     const hide = message.loading('正在删除');
@@ -107,11 +113,7 @@ const MenuPage: React.FC = () => {
     },
   ];
 
-  const reloadTree = () => {
-    tree().then(res => {
-      setTreeData([res.data]);
-    })
-  }
+
 
   useEffect(() => {
     reloadTree();

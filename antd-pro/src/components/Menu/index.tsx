@@ -1,5 +1,4 @@
 import React from 'react';
-import { menus } from '@/services/api/account';
 
 interface MenuProps {
   icon: string
@@ -13,24 +12,46 @@ const Menus: React.FC<MenuProps> = (props) => {
   )
 }
 
-export async function loadLayoutMenus() {
-  const response = await menus();
+export async function loadLayoutMenus(response:any) {
   if (response.success) {
     let childrens = response.data.children;
     if (childrens === null) {
       return [];
     }
-    const search = (data: any) => {
+    const fetchMenu = (data: any) => {
       data.icon = <Menus icon={data.icon} />;
       data.children = data.children || [];
       data.children.forEach((item: any) => {
-        search(item);
+        fetchMenu(item);
       });
       return data;
     }
-    childrens = childrens.map(item => search(item));
+    childrens = childrens.map((item:any) => fetchMenu(item));
     return childrens;
   } else {
     return [];
   }
+}
+
+export async function loadLoayoutMenuAuthentications(response:any) {
+  if (response.success) {
+    let childrens = response.data.children;
+    if (childrens === null) {
+      return [];
+    }
+    const authorities: string[] = [];
+    const feathAuthorities = (data: any) => {
+      authorities.push(data.path);
+      if (data.children) {
+        data.children.forEach((item: any) => {
+          feathAuthorities(item);
+        });
+      }
+    }
+    childrens.forEach((element:any) => {
+      feathAuthorities(element);
+    });
+    return authorities;
+  }
+  return [];
 }
