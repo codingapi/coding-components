@@ -37,11 +37,18 @@ public class Menu {
         return root;
     }
 
-    public int parentId() {
-        return parent == null ? 0 : parent.getId();
+    public int getParentId() {
+        if (parent == null) {
+            if (id.equals(root().id)) {
+                return 0;
+            }
+            return 1;
+        }else{
+            return parent.getId();
+        }
     }
-    
-    public void setParentId(int id){
+
+    public void setParentId(int id) {
         Menu parent = new Menu();
         parent.setId(id);
         this.parent = parent;

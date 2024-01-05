@@ -41,6 +41,7 @@ const MenuPage: React.FC = () => {
         actionRef.current.reload();
         //@ts-ignore
         treeRef.current?.refresh();
+        reloadTree();
       }
       return true;
     } catch (error) {
@@ -51,11 +52,6 @@ const MenuPage: React.FC = () => {
   };
 
   const columns: ProColumns<any>[] = [
-    {
-      title: "编号",
-      dataIndex: 'id',
-      search: false,
-    },
     {
       title: "名称",
       dataIndex: 'name',
@@ -88,6 +84,7 @@ const MenuPage: React.FC = () => {
               form.setFieldValue(key, record[key])
             }
             handleModalOpen(true);
+            form.setFieldValue('parentId', record.parentId)
           }}
         >
           修改
@@ -148,6 +145,7 @@ const MenuPage: React.FC = () => {
                 key="primary"
                 onClick={() => {
                   handleModalOpen(true);
+                  form.setFieldValue('parentId', parentId)
                 }}
               >
                 <PlusOutlined /> 新建
@@ -180,9 +178,6 @@ const MenuPage: React.FC = () => {
             form.resetFields();
           },
         }}
-        initialValues={{
-          "parentId": parentId,
-        }}
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {
@@ -194,6 +189,7 @@ const MenuPage: React.FC = () => {
             }
             //@ts-ignore
             treeRef.current?.refresh();
+            reloadTree();
           }
         }
         }

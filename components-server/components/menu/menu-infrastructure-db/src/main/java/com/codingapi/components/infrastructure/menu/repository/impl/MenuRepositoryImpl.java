@@ -45,7 +45,7 @@ public class MenuRepositoryImpl implements MenuRepository {
 
     private void fetchChildren(Menu parent, List<Menu> menuList) {
         for (Menu menu : menuList) {
-            if (menu.parentId() == parent.getId()) {
+            if (menu.getParentId() == parent.getId()) {
                 parent.addChild(menu);
                 fetchChildren(menu, menuList);
             }
