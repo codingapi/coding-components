@@ -1,9 +1,9 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message } from 'antd';
-import { Thread } from 'coding-components';
 import { logout } from './services/api/account';
 
+const sleep = (ms: number) => new Promise((resolve) => {setTimeout(resolve, ms)});
 
 /**
  * @name 错误处理
@@ -63,7 +63,7 @@ export const errorConfig: RequestConfig = {
             const code = res.errCode;
             if (code === 'token.expire' || code === 'token.error') {
               message.error('登陆已经失效，即将退出系统，请重新登陆.');
-              await Thread.sleep(2000);
+              await sleep(2000);
               await logout();
             } else {
               message.error(res.errMessage);

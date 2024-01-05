@@ -12,17 +12,17 @@ export async function list(
     pageSize?: number;
   }
 ) {
-  return get('/api/server/list', params);
+  return get('/api/node/list', params);
 }
 
 
 export async function save(body: any) {
-  return post('/api/server/save', body);
+  return post('/api/node/save', body);
 }
 
 
 export async function del(body: {
   id:string,
 }) {
-  return post('/api/server/delete', body);
+  return post('/api/node/delete', body);
 }
