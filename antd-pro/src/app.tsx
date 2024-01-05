@@ -8,6 +8,7 @@ import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
+import { loadLayoutMenus } from './components/Menu';
 const loginPath = '/user/login';
 
 /**
@@ -58,6 +59,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
+    },
+    menu:{
+        request: async(params, defaultMenuData) =>{
+          return await loadLayoutMenus();
+        }
     },
     waterMarkProps: {
       content: initialState?.currentUser?.username,

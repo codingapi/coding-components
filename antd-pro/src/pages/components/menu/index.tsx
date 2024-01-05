@@ -62,8 +62,8 @@ const MenuPage: React.FC = () => {
       search: false,
     },
     {
-      title: "编码",
-      dataIndex: 'code',
+      title: "地址",
+      dataIndex: 'path',
       search: false,
     },
     {
@@ -248,15 +248,15 @@ const MenuPage: React.FC = () => {
           name="name"
         />
         <ProFormText
-          placeholder="请输入菜单编码"
-          label="菜单编码"
+          placeholder="请输入菜单地址"
+          label="菜单地址"
           rules={[
             {
               required: true,
-              message: "请输入菜单编码",
+              message: "请输入菜单地址",
             },
           ]}
-          name="code"
+          name="path"
         />
         <ProFormText
           placeholder="请输入菜单图标"

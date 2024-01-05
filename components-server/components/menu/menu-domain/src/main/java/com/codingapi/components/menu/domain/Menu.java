@@ -22,7 +22,7 @@ public class Menu {
     private String name;
 
     @Column(unique = true)
-    private String code;
+    private String path;
 
     private String icon;
 
