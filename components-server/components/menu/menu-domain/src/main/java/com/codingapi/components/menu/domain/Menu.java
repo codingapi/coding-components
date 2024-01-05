@@ -40,6 +40,12 @@ public class Menu {
     public int parentId() {
         return parent == null ? 0 : parent.getId();
     }
+    
+    public void setParentId(int id){
+        Menu parent = new Menu();
+        parent.setId(id);
+        this.parent = parent;
+    }
 
     @Transient
     protected List<Menu> children;

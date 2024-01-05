@@ -1,7 +1,7 @@
-import { list, save, del } from '@/services/api/menu';
+import { list, save, del, tree } from '@/services/api/menu';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ModalForm, PageContainer, ProCard, ProFormDigit, ProFormText } from '@ant-design/pro-components';
+import { ModalForm, PageContainer, ProCard, ProFormDigit, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
 import { Button, Form, message, Popconfirm } from 'antd';
 import { MyTable } from 'coding-components';
 import React, { useRef, useState, useEffect } from 'react';
@@ -13,20 +13,13 @@ const MenuPage: React.FC = () => {
   const [form] = Form.useForm();
   const [parentId, setParentId] = useState<number>(1);
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
+  const [treeData, setTreeData] = useState<any[]>([]);
+  const treeRef = useRef();
 
   const handleAdd = async (fields: any) => {
     const hide = message.loading('正在添加');
     try {
-      const parentId = fields.parentId;
-      delete fields.parentId;
-      const request = {
-        ...fields,
-        parent: {
-          id: parentId
-        }
-      }
-      console.log(request);
-      await save(request);
+      await save(fields);
       hide();
       message.success('保存成功');
       return true;
@@ -46,6 +39,8 @@ const MenuPage: React.FC = () => {
       message.success('删除成功');
       if (actionRef.current) {
         actionRef.current.reload();
+        //@ts-ignore
+        treeRef.current?.refresh();
       }
       return true;
     } catch (error) {
@@ -115,6 +110,16 @@ const MenuPage: React.FC = () => {
     },
   ];
 
+  const reloadTree = () => {
+    tree().then(res => {
+      setTreeData([res.data]);
+    })
+  }
+
+  useEffect(() => {
+    reloadTree();
+  }, []);
+
   useEffect(() => {
     if (actionRef.current) {
       actionRef.current.reload();
@@ -126,6 +131,7 @@ const MenuPage: React.FC = () => {
       <ProCard gutter={8}>
         <ProCard colSpan="20%">
           <MenuTree
+            ref={treeRef}
             onSelect={(selectedKeys) => {
               setParentId(Number(selectedKeys[0]));
             }}
@@ -186,8 +192,11 @@ const MenuPage: React.FC = () => {
             if (actionRef.current) {
               actionRef.current.reload();
             }
+            //@ts-ignore
+            treeRef.current?.refresh();
           }
-        }}
+        }
+        }
       >
         <ProFormText
           hidden={true}
@@ -197,6 +206,38 @@ const MenuPage: React.FC = () => {
         <ProFormText
           hidden={true}
           name="parentId"
+        />
+
+        <ProFormTreeSelect
+          name="parentId"
+          label="父级菜单"
+          request={() => {
+            const id = form.getFieldValue('id');
+            const fetchTree = (root: any, list: any) => {
+              return list.map((item: any) => {
+                const disable = root ? root : item.id === id;
+                return {
+                  label: item.name,
+                  value: item.id,
+                  disabled: disable,
+                  children: item.children ? fetchTree(disable, item.children) : []
+                }
+              });
+            }
+            return fetchTree(null, treeData);
+          }}
+          fieldProps={
+            {
+              onChange: (value) => {
+                form.setFieldValue('typeId', value);
+              },
+              showArrow: false,
+              filterTreeNode: true,
+              showSearch: true,
+              multiple: false,
+              treeDefaultExpandAll: true,
+            }
+          }
         />
 
         <ProFormText

@@ -1,14 +1,14 @@
 import { Tree } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState, forwardRef } from 'react';
 import { DownOutlined, HomeOutlined, TeamOutlined } from '@ant-design/icons';
 import { DataNode } from 'antd/es/tree';
 import { tree } from '@/services/api/menu';
 
-interface MenuPageProps{
+interface MenuPageProps {
   onSelect?: (selectedKeys: React.Key[], info?: any) => void;
 }
 
-const MenuTree: React.FC<MenuPageProps> = (props) => {
+const MenuTree = forwardRef((props: MenuPageProps, ref) => {
 
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [defaultKeys, setSelectedKeys] = useState<React.Key[]>([1]);
@@ -38,6 +38,10 @@ const MenuTree: React.FC<MenuPageProps> = (props) => {
   }, []);
 
 
+  useImperativeHandle(ref, () => ({
+    refresh: refreshTree,
+  }));
+
   const onSelect = (selectedKeys: React.Key[]) => {
     setSelectedKeys(selectedKeys);
     if (props.onSelect) {
@@ -64,7 +68,7 @@ const MenuTree: React.FC<MenuPageProps> = (props) => {
     </>
   )
 
-}
+});
 
 
 export default MenuTree
