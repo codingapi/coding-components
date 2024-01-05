@@ -1,9 +1,10 @@
 import { Tree } from 'antd';
 import React, { useEffect, useImperativeHandle, useState, forwardRef } from 'react';
-import { DownOutlined, HomeOutlined, TeamOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { DataNode } from 'antd/es/tree';
 import { tree } from '@/services/api/menu';
 
+const { DirectoryTree } = Tree;
 interface MenuPageProps {
   onSelect?: (selectedKeys: React.Key[], info?: any) => void;
 }
@@ -20,7 +21,7 @@ const MenuTree = forwardRef((props: MenuPageProps, ref) => {
         const search = (data: any) => {
           data.title = data.name;
           data.key = data.id;
-          data.icon = data.type === 'COMPANY' ? <HomeOutlined /> : <TeamOutlined />;
+          delete data.icon;
           data.children = data.children || [];
           data.children.forEach((item: any) => {
             search(item);
@@ -43,16 +44,18 @@ const MenuTree = forwardRef((props: MenuPageProps, ref) => {
   }));
 
   const onSelect = (selectedKeys: React.Key[]) => {
-    setSelectedKeys(selectedKeys);
-    if (props.onSelect) {
-      props.onSelect(selectedKeys);
+    if (selectedKeys.length > 0) {
+      setSelectedKeys(selectedKeys);
+      if (props.onSelect) {
+        props.onSelect(selectedKeys);
+      }
     }
   };
 
   return (
     <>
       {treeData && treeData.length > 0 && (
-        <Tree
+        <DirectoryTree
           showIcon
           blockNode
           defaultExpandAll

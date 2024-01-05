@@ -2,6 +2,7 @@ package com.codingapi.components.menu.config;
 
 import com.codingapi.components.menu.context.MenuContextRegister;
 import com.codingapi.components.menu.domain.Menu;
+import com.codingapi.components.menu.gateway.MenuGateway;
 import com.codingapi.components.menu.repository.MenuRepository;
 import com.codingapi.components.menu.service.MenuService;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
@@ -60,5 +61,17 @@ public class MenuDomainConfiguration {
     @ConditionalOnMissingBean
     public MenuContextRegister menuContextRegister(MenuRepository menuRepository){
         return new MenuContextRegister(menuRepository);
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MenuGateway menuGateway(MenuRepository menuRepository){
+        return new MenuGateway() {
+            @Override
+            public Menu loadMenus() {
+                return menuRepository.tree();
+            }
+        };
     }
 }

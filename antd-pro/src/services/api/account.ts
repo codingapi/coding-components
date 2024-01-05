@@ -39,5 +39,5 @@ export async function login(body: Account.LoginRequest) {
  * @returns 菜单列表
  */
 export async function menus(){
-  return get('/api/menu/tree');
+  return get('/api/menus');
 }

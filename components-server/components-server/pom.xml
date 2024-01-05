@@ -39,7 +39,6 @@
             <version>${project.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.codingapi.components</groupId>
             <artifactId>menu-restapi</artifactId>

@@ -63,11 +63,16 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       },
     },
     menu: {
-      request: async () => {
-        const response = await menus();
-        const authentications = await loadLoayoutMenuAuthentications(response);
-        localStorage.setItem('authentications', JSON.stringify(authentications));
-        return await loadLayoutMenus(response);
+      request: async (params,defaultMenuData) => {
+        try{
+          const response = await menus();
+          const authentications = await loadLoayoutMenuAuthentications(response);
+          localStorage.setItem('authentications', JSON.stringify(authentications));
+          return await loadLayoutMenus(response);
+        }catch(error){
+          localStorage.removeItem('authentications');
+          return defaultMenuData
+        }
       }
     },
     waterMarkProps: {

@@ -1,18 +1,25 @@
 import React from 'react';
+import Icon from '@ant-design/icons'
+import * as icons from '@ant-design/icons'
+
 
 interface MenuProps {
   icon: string
 }
 
 const Menus: React.FC<MenuProps> = (props) => {
-  return (
-    <img src={props.icon} style={{
-      width: '20px'
-    }} />
-  )
+  if (props.icon === '-') {
+    return <></>
+  }
+
+  if (props.icon) {
+    return <Icon component={icons[props.icon]} />
+  } else {
+    return <></>
+  }
 }
 
-export async function loadLayoutMenus(response:any) {
+export async function loadLayoutMenus(response: any) {
   if (response.success) {
     let childrens = response.data.children;
     if (childrens === null) {
@@ -26,14 +33,14 @@ export async function loadLayoutMenus(response:any) {
       });
       return data;
     }
-    childrens = childrens.map((item:any) => fetchMenu(item));
+    childrens = childrens.map((item: any) => fetchMenu(item));
     return childrens;
   } else {
     return [];
   }
 }
 
-export async function loadLoayoutMenuAuthentications(response:any) {
+export async function loadLoayoutMenuAuthentications(response: any) {
   if (response.success) {
     let childrens = response.data.children;
     if (childrens === null) {
@@ -48,7 +55,7 @@ export async function loadLoayoutMenuAuthentications(response:any) {
         });
       }
     }
-    childrens.forEach((element:any) => {
+    childrens.forEach((element: any) => {
       feathAuthorities(element);
     });
     return authorities;

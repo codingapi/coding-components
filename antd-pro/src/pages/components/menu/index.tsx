@@ -2,10 +2,13 @@ import { list, save, del, tree } from '@/services/api/menu';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProCard, ProFormDigit, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
-import { Button, Form, message, Popconfirm } from 'antd';
+import { Button, Form, message, Modal, Popconfirm } from 'antd';
 import { MyTable } from 'coding-components';
 import React, { useRef, useState, useEffect } from 'react';
 import MenuTree from './tree';
+import IconSelect from './icons';
+import Icon from '@ant-design/icons';
+import * as icons from '@ant-design/icons'
 
 const MenuPage: React.FC = () => {
 
@@ -66,6 +69,16 @@ const MenuPage: React.FC = () => {
       title: "图标",
       dataIndex: 'icon',
       search: false,
+      render: (_, record) => {
+        if (record.icon === '-') {
+          return '';
+        }
+        if (record.icon) {
+          return <Icon component={icons[record.icon]} />
+        } else {
+          return '';
+        }
+      }
     },
     {
       title: "地址",
@@ -254,22 +267,15 @@ const MenuPage: React.FC = () => {
           label="菜单地址"
           rules={[
             {
-              required: true,
               message: "请输入菜单地址",
             },
           ]}
           name="path"
         />
-        <ProFormText
-          placeholder="请输入菜单图标"
+        <IconSelect
           label="菜单图标"
-          rules={[
-            {
-              required: true,
-              message: "请输入菜单图标",
-            },
-          ]}
           name="icon"
+          placeholder="请输入菜单图标"
         />
         <ProFormDigit
           min={0}
@@ -289,6 +295,8 @@ const MenuPage: React.FC = () => {
           name="sort"
         />
       </ModalForm>
+
+
 
     </PageContainer>
   );
