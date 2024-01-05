@@ -12,6 +12,24 @@ order: 3
 
 文件服务是指通过配置的方式，动态生成文件服务界面，从而实现业务服务文件的动态化。
 
+## 效果
+
+文件管理 
+
+![index](/imgs/oss/index.png)
+
+文件上传
+
+![index](/imgs/oss/upload.png)
+
+文件预览
+
+![index](/imgs/oss/show.png)
+
+
+文件后端模块安装以后，将提供文件的上传与访问的接口。
+
+
 ## 安装
 
 ```ts

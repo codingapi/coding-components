@@ -10,8 +10,26 @@ order: 1
 
 # 说明
 
-动态接口是指通过配置的方式，动态生成接口，从而实现接口的动态化。动态接口仅支持查询接口。
+动态接口是指通过配置的方式，动态生成接口，动态接口仅支持查询接口。
 
+## 效果
+
+接口列表界面  
+
+![index](/imgs/api/index.jpg)
+
+接口测试界面   
+
+![test](/imgs/api/test.png)
+
+添加接口界面  
+
+![test](/imgs/api/add.png)
+
+接口文档界面  
+
+![test](/imgs/api/doc1.png)
+![test](/imgs/api/doc2.png)
 
 ## 安装
 

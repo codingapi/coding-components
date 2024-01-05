@@ -10,7 +10,31 @@ order: 2
 
 # 说明
 
-参数管理是指通过配置的方式，动态生成参数管理界面，从而实现业务服务参数的动态化。
+参数管理是系统全局的参数控制，开启模块以后可以在后台管理参数，并在代码中获取参数用于业务控制。
+
+
+## 效果
+
+参数设置界面
+
+![index](/imgs/parameter/index.png)
+
+在后端中使用：
+
+```java
+import com.codingapi.components.parameter.context.ParameterContext;
+
+public class Test {
+    
+    void test(){
+
+        int test = ParameterContext.getInstance().getIntParam("test",1);
+    }
+}
+
+```
+
+通过`ParameterContext.getInstance().getIntParam("test",1)`既可以获取参数，支持Float、Doule、Long、Int、String等常用的数据格式。
 
 
 ## 安装
@@ -71,7 +95,7 @@ export async function list(
 }
 
 
-export async function save(body: Table.SaveCommand, options?: { [key: string]: any }) {
+export async function save(body: any, options?: { [key: string]: any }) {
   return request<API.Response<any>>('/api/parameter/save', {
     method: 'POST',
     headers: {
