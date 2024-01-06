@@ -1,9 +1,9 @@
 package com.codingapi.components.infrastructure.parameter.repository.impl;
 
+import com.codingapi.components.infrastructure.parameter.jpa.JpaParameterRepository;
 import com.codingapi.components.parameter.domain.Parameter;
 import com.codingapi.components.parameter.repository.ParameterRepository;
-import com.codingapi.components.infrastructure.parameter.jpa.JpaParameterRepository;
-import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 
@@ -23,8 +23,8 @@ public class ParameterRepositoryImpl implements ParameterRepository {
     }
 
     @Override
-    public Page<Parameter> list(PageRequest request) {
-        return jpaParameterRepository.pageRequest(request);
+    public Page<Parameter> list(SearchRequest request) {
+        return jpaParameterRepository.searchRequest(request);
     }
 
     @Override

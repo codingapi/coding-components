@@ -1,7 +1,7 @@
 package com.codingapi.components.parameter.repository;
 
 import com.codingapi.components.parameter.domain.Parameter;
-import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import org.springframework.data.domain.Page;
 
 public interface ParameterRepository {
@@ -10,7 +10,7 @@ public interface ParameterRepository {
 
     void delete(int id);
 
-    Page<Parameter> list(PageRequest request);
+    Page<Parameter> list(SearchRequest request);
 
     Parameter getParam(String code);
 

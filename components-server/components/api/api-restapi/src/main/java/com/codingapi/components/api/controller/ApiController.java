@@ -3,7 +3,7 @@ package com.codingapi.components.api.controller;
 import com.codingapi.components.api.domain.Api;
 import com.codingapi.components.api.service.ApiService;
 import com.codingapi.springboot.framework.dto.request.IdRequest;
-import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import com.codingapi.springboot.framework.dto.response.MultiResponse;
 import com.codingapi.springboot.framework.dto.response.Response;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class ApiController {
 
 
     @GetMapping("/list")
-    public MultiResponse<Api> list(PageRequest request) {
+    public MultiResponse<Api> list(SearchRequest request) {
         return MultiResponse.of(apiService.list(request));
     }
 }

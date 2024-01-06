@@ -4,6 +4,7 @@ import com.codingapi.components.api.domain.Api;
 import com.codingapi.components.infrastructure.api.jpa.JpaApiMappingRepository;
 import com.codingapi.components.api.repository.ApiRepository;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
@@ -32,5 +33,10 @@ public class ApiRepositoryImpl implements ApiRepository {
     @Override
     public Page<Api> list(PageRequest request) {
         return jpaApiMappingRepository.pageRequest(request);
+    }
+
+    @Override
+    public Page<Api> list(SearchRequest request) {
+        return jpaApiMappingRepository.searchRequest(request);
     }
 }

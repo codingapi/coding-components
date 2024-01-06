@@ -29,7 +29,7 @@
         <maven.compile.source>17</maven.compile.source>
         <maven.compile.target>17</maven.compile.target>
 
-        <codingapi.framework.version>3.1.8.dev</codingapi.framework.version>
+         <codingapi.framework.version>3.1.9.dev</codingapi.framework.version>
     </properties>
 
     <dependencies>

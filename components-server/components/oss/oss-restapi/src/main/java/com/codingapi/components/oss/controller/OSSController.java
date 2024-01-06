@@ -3,10 +3,10 @@ package com.codingapi.components.oss.controller;
 import com.codingapi.components.oss.domain.OSSFile;
 import com.codingapi.components.oss.repository.FileRepository;
 import com.codingapi.springboot.framework.dto.request.IdRequest;
-import com.codingapi.springboot.framework.dto.request.PageRequest;
 import com.codingapi.springboot.framework.dto.response.MultiResponse;
 import com.codingapi.springboot.framework.dto.response.Response;
 import com.codingapi.springboot.framework.exception.LocaleMessageException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.util.StringUtils;
@@ -24,7 +24,7 @@ public class OSSController {
     private final FileRepository fileRepository;
 
     @GetMapping("/list")
-    public MultiResponse<OSSFile> list(PageRequest request) {
+    public MultiResponse<OSSFile> list(HttpServletRequest request) {
         List<OSSFile> list = fileRepository.findAll();
         String name = request.getParameter("name");
 

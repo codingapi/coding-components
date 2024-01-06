@@ -5,7 +5,7 @@ import com.codingapi.components.menu.domain.Menu;
 import com.codingapi.components.menu.gateway.MenuGateway;
 import com.codingapi.components.menu.repository.MenuRepository;
 import com.codingapi.components.menu.service.MenuService;
-import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ public class MenuDomainConfiguration {
             }
 
             @Override
-            public Page<Menu> list(PageRequest request) {
+            public Page<Menu> list(SearchRequest request) {
                 return null;
             }
 

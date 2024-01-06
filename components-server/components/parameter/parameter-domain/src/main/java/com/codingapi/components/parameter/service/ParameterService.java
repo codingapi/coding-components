@@ -2,7 +2,7 @@ package com.codingapi.components.parameter.service;
 
 import com.codingapi.components.parameter.domain.Parameter;
 import com.codingapi.components.parameter.repository.ParameterRepository;
-import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -22,7 +22,7 @@ public class ParameterService {
     }
 
 
-    public Page<Parameter> list(PageRequest request) {
+    public Page<Parameter> list(SearchRequest request) {
         request.addSort(Sort.by("sort").ascending());
         return parameterRepository.list(request);
     }

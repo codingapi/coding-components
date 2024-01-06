@@ -4,6 +4,7 @@ import com.codingapi.components.api.domain.Api;
 import com.codingapi.components.api.gateway.ScriptMappingGateway;
 import com.codingapi.components.api.repository.ApiRepository;
 import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import com.codingapi.springboot.framework.dto.response.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
@@ -44,7 +45,7 @@ public class ApiService implements InitializingBean {
     }
 
 
-    public Page<Api> list(PageRequest request) {
+    public Page<Api> list(SearchRequest request) {
         return apiRepository.list(request);
     }
 

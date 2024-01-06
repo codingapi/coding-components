@@ -3,7 +3,7 @@ package com.codingapi.components.infrastructure.menu.repository.impl;
 import com.codingapi.components.infrastructure.menu.jpa.JpaMenuRepository;
 import com.codingapi.components.menu.domain.Menu;
 import com.codingapi.components.menu.repository.MenuRepository;
-import com.codingapi.springboot.framework.dto.request.PageRequest;
+import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -26,8 +26,8 @@ public class MenuRepositoryImpl implements MenuRepository {
     }
 
     @Override
-    public Page<Menu> list(PageRequest request) {
-        return jpaParameterRepository.pageRequest(request);
+    public Page<Menu> list(SearchRequest request) {
+        return jpaParameterRepository.searchRequest(request);
     }
 
     @Override
