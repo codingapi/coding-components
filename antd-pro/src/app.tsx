@@ -9,7 +9,6 @@ import { errorConfig } from './requestErrorConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { loadLayoutMenus, loadLoayoutMenuAuthentications } from './components/Menu';
-import { flushSync } from 'react-dom';
 import { menus } from '@/services/api/account'
 const loginPath = '/user/login';
 

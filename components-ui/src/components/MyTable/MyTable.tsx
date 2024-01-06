@@ -43,7 +43,14 @@ export const MyTable = forwardRef(<T extends Record<string, any>, U extends Para
 
   const [isSort, setIsSort] = useState<boolean>(false);
 
-  const [columns, setColumns] = useState<any>(props.columns);
+  const propsColumns = props.columns.map(item => {
+    if (item.width === undefined) {
+      item.width = 100;
+    }
+    return item;
+  });
+
+  const [columns, setColumns] = useState<any>(propsColumns);
 
   const handleResize = (index: number) => (e: any, { size }: any) => {
     const nextColumns = [...(columns ?? [])];
