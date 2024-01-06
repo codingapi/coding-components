@@ -4,13 +4,7 @@ import {get, post} from "@/services/api/index";
 
 
 export async function list(
-  params: {
-    // query
-    /** 当前的页码 */
-    current?: number;
-    /** 页面的容量 */
-    pageSize?: number;
-  }
+  params: any
 ) {
   return get('/api/node/list', params);
 }
@@ -18,6 +12,10 @@ export async function list(
 
 export async function save(body: any) {
   return post('/api/node/save', body);
+}
+
+export async function resort(body: any) {
+  return post('/api/node/resort', body);
 }
 
 

@@ -1,9 +1,9 @@
-import { list, save, del } from '@/services/api/table';
+import { list, save, del, resort } from '@/services/api/table';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ModalForm, PageContainer, ProFormSelect, ProFormText, ProTable } from '@ant-design/pro-components';
+import { ModalForm, PageContainer, ProFormSelect, ProFormText, ProFormDigit } from '@ant-design/pro-components';
 import { Button, Form, message, Popconfirm } from 'antd';
-import { MyTable } from 'coding-components';
+import { MyTable } from './MyTable';
 import React, { useRef, useState } from 'react';
 
 const TablePage: React.FC = () => {
@@ -50,20 +50,24 @@ const TablePage: React.FC = () => {
       dataIndex: 'id',
       sorter: true,
       search: false,
+      width: 100,
     },
     {
       title: "服务名称",
       dataIndex: 'name',
       sorter: true,
+      width: 100,
     },
     {
       title: "地址",
       dataIndex: 'url',
       search: false,
+      width: 100,
     },
     {
       title: "状态",
       dataIndex: 'state',
+      width: 100,
       filters: [
         {
           text: '禁用',
@@ -86,9 +90,16 @@ const TablePage: React.FC = () => {
       },
     },
     {
+      title: "排序",
+      dataIndex: 'sort',
+      search: false,
+      width: 100,
+    },
+    {
       title: "操作",
       dataIndex: 'option',
       valueType: 'option',
+      width: 100,
       render: (_, record) => [
         <a
           key="config"
@@ -123,9 +134,23 @@ const TablePage: React.FC = () => {
   return (
     <PageContainer>
       <MyTable
+        sortable={true}
+        dragSortKey="id"
+        onDragSortEnd={
+          async (beforeIndex: number, afterIndex: number,oldDataSource: any[], newDataSource: any[], rowKey: string) => {
+            console.log(beforeIndex, afterIndex, oldDataSource, newDataSource, rowKey);
+            const beforeId = oldDataSource[beforeIndex][rowKey];
+            const afterId = oldDataSource[afterIndex][rowKey];
+            const body = {
+              beforeId: beforeId,
+              afterId: afterId,
+            };
+            resort(body)
+          }
+        }
         headerTitle="服务节点配置"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         toolBarRender={() => [
           <Button
             type="primary"
@@ -138,7 +163,6 @@ const TablePage: React.FC = () => {
           </Button>,
         ]}
         request={async (params, sort, filter) => {
-          console.log(params, sort, filter);
           const res = await list({
             ...params,
             sort: Buffer.from(JSON.stringify(sort)).toString('base64'),
@@ -225,6 +249,18 @@ const TablePage: React.FC = () => {
           ]}
           name="state"
         />
+
+        <ProFormDigit
+          label="排序"
+          rules={[
+            {
+              required: true,
+              message: "请输入排序",
+            },
+          ]}
+          placeholder="请输入排序"
+          name="sort" />
+
       </ModalForm>
 
     </PageContainer>

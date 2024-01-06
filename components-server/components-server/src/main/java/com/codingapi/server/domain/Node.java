@@ -19,7 +19,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
-public class Node implements Cloneable {
+public class Node implements ISort,Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +32,10 @@ public class Node implements Cloneable {
 
     @JsonSerialize(using = EnumSerializer.class)
     private State state;
+
+
+    private Integer sort;
+
 
     @SneakyThrows
     public void swap(Node target) {

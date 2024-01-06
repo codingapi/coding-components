@@ -8,6 +8,7 @@ import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import com.codingapi.springboot.framework.dto.response.MultiResponse;
 import com.codingapi.springboot.framework.dto.response.Response;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +22,14 @@ public class NodeController {
 
     @GetMapping("/list")
     public MultiResponse<Node> list(SearchRequest request) {
+        request.addSort(Sort.by("sort").ascending());
         return MultiResponse.of(nodeRepository.searchRequest(request));
+    }
+
+    @PostMapping("/resort")
+    public Response resort(@RequestBody SortRequest sortRequest) {
+        nodeRepository.reSort(sortRequest);
+        return Response.buildSuccess();
     }
 
     @PostMapping("/save")
