@@ -2,6 +2,7 @@ package com.codingapi.server.domain;
 
 
 import com.codingapi.server.event.NodeEvent;
+import com.codingapi.springboot.framework.domain.ISort;
 import com.codingapi.springboot.framework.em.IEnum;
 import com.codingapi.springboot.framework.event.EventPusher;
 import com.codingapi.springboot.framework.serializable.EnumSerializer;
@@ -19,7 +20,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
-public class Node implements ISort,Cloneable {
+public class Node implements ISort, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

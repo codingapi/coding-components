@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormSelect, ProFormText, ProFormDigit } from '@ant-design/pro-components';
 import { Button, Form, message, Popconfirm } from 'antd';
-import { MyTable } from './MyTable';
+import { MyTable } from 'coding-components';
 import React, { useRef, useState } from 'react';
 
 const TablePage: React.FC = () => {
@@ -137,15 +137,11 @@ const TablePage: React.FC = () => {
         sortable={true}
         dragSortKey="id"
         onDragSortEnd={
-          async (beforeIndex: number, afterIndex: number,oldDataSource: any[], newDataSource: any[], rowKey: string) => {
-            console.log(beforeIndex, afterIndex, oldDataSource, newDataSource, rowKey);
-            const beforeId = oldDataSource[beforeIndex][rowKey];
-            const afterId = oldDataSource[afterIndex][rowKey];
+          async (beforeIndex: number, afterIndex: number, newDataSource: any[], rowKey?: string, ids?:any[]) => {
             const body = {
-              beforeId: beforeId,
-              afterId: afterId,
+              ids,
             };
-            resort(body)
+            resort(body);
           }
         }
         headerTitle="服务节点配置"
