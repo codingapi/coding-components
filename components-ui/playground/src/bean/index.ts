@@ -1,9 +1,8 @@
-import { testModel } from '@/bean/test';
+import { defaultTestModel } from '@/bean/test';
 import { beanFactory } from 'coding-components'
 
 
-
 export const registerBeans = () => {
-    beanFactory.registerBean(testModel);
+  beanFactory.registerBean(defaultTestModel);
 }
 

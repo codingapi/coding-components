@@ -95,7 +95,7 @@ export default [
   },
   {
     name: 'framework',
-    icon: 'appstore',
+    icon: 'api',
     path: '/framework',
     access: 'hasAuthentication',
     routes: [

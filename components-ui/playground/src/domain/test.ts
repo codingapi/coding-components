@@ -1,4 +1,5 @@
 import { Bean } from "coding-components";
+
 export class Test {
   count = 0;
 
@@ -25,10 +26,10 @@ export class Test {
   }
 }
 
-export abstract class TestModel implements Bean{
-  beanName:string = "TestModel";
+export abstract class TestModel implements Bean {
+  beanName: string = "TestModel";
 
-  public abstract loadData():string;
+  public abstract loadData(): string;
 }
 
 

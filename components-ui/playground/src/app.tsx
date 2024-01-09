@@ -73,6 +73,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       },
     },
     menu: {
+      //https://pro.ant.design/zh-CN/docs/advanced-menu/
       request: async (params,defaultMenuData) => {
         try{
           const response = await menus();
@@ -132,3 +133,13 @@ export const request = {
 };
 
 
+//https://umijs.org/docs/api/runtime-config#patchclientroutes-routes-
+export function patchClientRoutes({ routes }) {
+  // const baseLayout = routes.find((route) => route.path === '/');
+
+  // baseLayout.children.push({
+  //   path: '/foo',
+  //   element: <div>123</div>,
+  // });
+  return routes;
+}

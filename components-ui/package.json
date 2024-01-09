@@ -6,9 +6,6 @@
   "files": [
     "dist"
   ],
-  "publishConfig": {
-    "registry": "http://localhost:4873"
-  },
   "peerDependencies": {
     "@ant-design/pro-components": "^2.4.4",
     "@ant-design/icons": "^5.2.6",

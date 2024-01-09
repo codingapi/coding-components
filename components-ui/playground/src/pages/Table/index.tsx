@@ -1,284 +1,266 @@
-import services from '@/services/demo';
-import {
-  ActionType,
-  FooterToolbar,
-  PageContainer,
-  ProDescriptions,
-} from '@ant-design/pro-components';
-import { Button, Divider, Drawer, message } from 'antd';
+import { list, save, del, resort } from '@/services/api/table';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { ModalForm, PageContainer, ProFormSelect, ProFormText, ProFormDigit } from '@ant-design/pro-components';
+import { Button, Form, message, Popconfirm } from 'antd';
+import { MyTable } from 'coding-components';
 import React, { useRef, useState } from 'react';
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { MyTable, Thread } from 'coding-components';
 
-const { addUser, queryUserList, deleteUser, modifyUser } =
-  services.UserController;
+const TablePage: React.FC = () => {
 
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.UserInfo) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addUser({ ...fields });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
-
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await modifyUser(
-      {
-        userId: fields.id || '',
-      },
-      {
-        name: fields.name || '',
-        nickName: fields.nickName || '',
-        email: fields.email || '',
-      },
-    );
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: API.UserInfo[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await deleteUser({
-      userId: selectedRows.find((row) => row.id)?.id || '',
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
-const TableList: React.FC<unknown> = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] =
-    useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
+  const [form] = Form.useForm<{ id: string; name: string; url: string }>();
+  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
 
-  const [row, setRow] = useState<API.UserInfo>();
-  const [selectedRowsState, setSelectedRows] = useState<API.UserInfo[]>([]);
+  const handleAdd = async (fields: any) => {
+    const hide = message.loading('正在添加');
+    try {
+      await save({ ...fields });
+      hide();
+      message.success('保存成功');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('保存失败，请重试!');
+      return false;
+    }
+  };
 
-  const columns = [
+
+  const handleDel = async (id: string) => {
+    const hide = message.loading('正在删除');
+    try {
+      await del({ id: id });
+      hide();
+      message.success('删除成功');
+      if (actionRef.current) {
+        actionRef.current.reload();
+      }
+      return true;
+    } catch (error) {
+      hide();
+      message.error('删除失败，请重试!');
+      return false;
+    }
+  };
+
+  const columns: ProColumns<any>[] = [
     {
-      title: '名称',
+      title: "编号",
+      dataIndex: 'id',
+      sorter: true,
+      search: false,
+      width: 100,
+    },
+    {
+      title: "服务名称",
       dataIndex: 'name',
-      tip: '名称是唯一的 key',
+      sorter: true,
       width: 100,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '名称为必填项',
-          },
-        ],
-      },
     },
     {
-      title: '昵称',
-      dataIndex: 'nickName',
+      title: "地址",
+      dataIndex: 'url',
+      search: false,
       width: 100,
-      valueType: 'text',
     },
     {
-      title: '性别',
-      dataIndex: 'gender',
-      hideInForm: true,
+      title: "状态",
+      dataIndex: 'state',
       width: 100,
+      filters: [
+        {
+          text: '禁用',
+          value: 0,
+        },
+        {
+          text: '启用',
+          value: 1,
+        },
+      ],
       valueEnum: {
-        'MALE': { text: '男', status: 'MALE' },
-        'FEMALE': { text: '女', status: 'FEMALE' },
+        0: {
+          text: '禁用',
+          status: 'Error'
+        },
+        1: {
+          text: '启用',
+          status: 'Success'
+        },
       },
     },
     {
-      title: '操作',
+      title: "排序",
+      dataIndex: 'sort',
+      search: false,
+      width: 100,
+    },
+    {
+      title: "操作",
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => (
-        <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            配置
+      width: 100,
+      render: (_, record) => [
+        <a
+          key="config"
+          onClick={() => {
+            // eslint-disable-next-line guard-for-in
+            for (let key in record) {
+              form.setFieldValue(key, record[key])
+            }
+            handleModalOpen(true);
+          }}
+        >
+          修改
+        </a>,
+        <Popconfirm
+          key="delete"
+          title="删除提示"
+          description="确认要删除这条数据吗?"
+          onConfirm={async () => {
+            await handleDel(record.id);
+          }}
+          okText="确认"
+          cancelText="取消"
+        >
+          <a key="delete">
+            删除
           </a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
-        </>
-      ),
+        </Popconfirm>
+      ],
     },
   ];
 
   return (
-    <PageContainer
-      header={{
-        title: 'CRUD 示例',
-      }}
-    >
-
+    <PageContainer>
       <MyTable
-        headerTitle="查询表格"
         sortable={true}
-        dragSortKey="name"
+        dragSortKey="id"
+        onDragSortEnd={
+          async (beforeIndex: number, afterIndex: number, newDataSource: any[], rowKey?: string, ids?:any[]) => {
+            const body = {
+              ids,
+            };
+            resort(body);
+          }
+        }
+        headerTitle="服务节点配置"
         actionRef={actionRef}
-        onDragSortEnd={async (beforeIndex, afterIndex, newDataSource) => {
-          await Thread.sleep(1000);
-          console.log('newDataSource', newDataSource);
-        }}
-        rowClassName={(record, index) => {
-          return 'cursor-row';
-        }}
-        rowKey="name"
-        search={{
-          labelWidth: 120,
-        }}
+        rowKey="id"
         toolBarRender={() => [
           <Button
-            key="1"
             type="primary"
-            onClick={() => handleModalVisible(true)}
+            key="primary"
+            onClick={() => {
+              handleModalOpen(true);
+            }}
           >
-            新建
+            <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={async (params, sorter, filter) => {
-          const { data, success } = await queryUserList({
+        request={async (params, sort, filter) => {
+          const res = await list({
             ...params,
-            // FIXME: remove @ts-ignore
-            // @ts-ignore
-            sorter,
-            filter,
+            sort: Buffer.from(JSON.stringify(sort)).toString('base64'),
+            filter: Buffer.from(JSON.stringify(filter)).toString('base64'),
           });
           return {
-            data: data?.list || [],
-            success,
+            data: res.data.list,
+            success: res.success,
+            total: res.data.total
           };
-        }}
+        }
+        }
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
-        }}
       />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              已选择{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              项&nbsp;&nbsp;
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            批量删除
-          </Button>
-          <Button type="primary">批量审批</Button>
-        </FooterToolbar>
-      )}
-      <CreateForm
-        onCancel={() => handleModalVisible(false)}
-        modalVisible={createModalVisible}
-      >
-        <MyTable
-          onSubmit={async (value) => {
-            const success = await handleAdd(value);
-            if (success) {
-              handleModalVisible(false);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          rowKey="id"
-          type="form"
-          columns={columns}
-        />
-      </CreateForm>
-      {stepFormValues && Object.keys(stepFormValues).length ? (
-        <UpdateForm
-          onSubmit={async (value) => {
-            const success = await handleUpdate(value);
-            if (success) {
-              handleUpdateModalVisible(false);
-              setStepFormValues({});
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          onCancel={() => {
-            handleUpdateModalVisible(false);
-            setStepFormValues({});
-          }}
-          updateModalVisible={updateModalVisible}
-          values={stepFormValues}
-        />
-      ) : null}
 
-      <Drawer
-        width={600}
-        open={!!row}
-        onClose={() => {
-          setRow(undefined);
+      <ModalForm
+        title="新建规则"
+        form={form}
+        initialValues={{
+          state: 1,
         }}
-        closable={false}
+        modalProps={{
+          destroyOnClose: true,
+          onCancel: () => {
+            form.resetFields();
+          },
+        }}
+        open={createModalOpen}
+        onOpenChange={handleModalOpen}
+        onFinish={async (value) => {
+          const success = await handleAdd(value);
+          if (success) {
+            handleModalOpen(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
       >
-        {row?.name && (
-          <ProDescriptions<API.UserInfo>
-            column={2}
-            title={row?.name}
-            request={async () => ({
-              data: row || {},
-            })}
-            params={{
-              id: row?.name,
-            }}
-            columns={columns}
-          />
-        )}
-      </Drawer>
+        <ProFormText
+          hidden={true}
+          name="id"
+        />
+        <ProFormText
+          label="服务名称"
+          placeholder="请输入服务名称"
+          rules={[
+            {
+              required: true,
+              message: "请输入服务名称",
+            },
+          ]}
+          name="name"
+        />
+        <ProFormText
+          label="服务地址"
+          rules={[
+            {
+              required: true,
+              message: "请输入服务名称",
+            },
+          ]}
+          placeholder="请输入服务地址"
+          name="url" />
+
+        <ProFormSelect
+          label="服务状态"
+          placeholder="请输入服务状态"
+          rules={[
+            {
+              required: true,
+              message: "请输入服务状态",
+            },
+          ]}
+          options={[
+            {
+              label: '启用',
+              value: 1,
+            },
+            {
+              label: '禁用',
+              value: 0,
+            },
+          ]}
+          name="state"
+        />
+
+        <ProFormDigit
+          label="排序"
+          rules={[
+            {
+              required: true,
+              message: "请输入排序",
+            },
+          ]}
+          placeholder="请输入排序"
+          name="sort" />
+
+      </ModalForm>
+
     </PageContainer>
   );
 };
 
-export default TableList;
+export default TablePage;
