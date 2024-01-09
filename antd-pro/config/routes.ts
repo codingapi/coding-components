@@ -94,6 +94,45 @@ export default [
     ],
   },
   {
+    name: 'framework',
+    icon: 'appstore',
+    path: '/framework',
+    access: 'hasAuthentication',
+    routes: [
+      {
+        name: 'dva',
+        path: '/framework/dva',
+        access: 'hasAuthentication',
+        routes: [
+          {
+            name: 'test1',
+            path: '/framework/dva/test1',
+            component: './framework/dva/test1',
+            access: 'hasAuthentication',
+          },
+          {
+            name: 'test2',
+            path: '/framework/dva/test2',
+            component: './framework/dva/test2',
+            access: 'hasAuthentication',
+          },
+        ]
+      },
+      {
+        name: 'bean',
+        path: '/framework/bean',
+        access: 'hasAuthentication',
+        component: './framework/bean',
+      },
+      {
+        name: 'event',
+        path: '/framework/event',
+        access: 'hasAuthentication',
+        component: './framework/event',
+      }
+    ]
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

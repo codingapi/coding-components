@@ -18,6 +18,9 @@ export default defineConfig({
   // 默认是 browser
   history: { type: 'hash' },
 
+  // dva 的配置
+  dva: {},
+
   /**
    * @name 兼容性设置
    * @description 设置 ie11 不一定完美兼容，需要检查自己使用的所有依赖

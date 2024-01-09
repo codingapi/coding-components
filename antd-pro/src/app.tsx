@@ -10,7 +10,18 @@ import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { loadLayoutMenus, loadLoayoutMenuAuthentications } from './components/Menu';
 import { menus } from '@/services/api/account'
-const loginPath = '/user/login';
+
+const loginPath = '/login';
+import * as beans from '@/bean';
+
+// 初始化bean
+function initBean() {
+  console.log('register beans');
+  beans.registerBeans();
+}
+
+
+initBean();
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -119,3 +130,5 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
 export const request = {
   ...errorConfig,
 };
+
+

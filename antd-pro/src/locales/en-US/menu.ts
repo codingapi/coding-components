@@ -55,4 +55,10 @@ export default {
   'menu.components.parameter': 'Parameter',
   'menu.components.oss': 'Files',
   'menu.components.oss.test': 'File Test',
+  'menu.framework': 'Framework',
+  'menu.framework.dva': 'dva',
+  'menu.framework.dva.test1': 'Test1',
+  'menu.framework.dva.test2': 'Test2',
+  'menu.framework.bean': 'Bean',
+  'menu.framework.event': 'Event',
 };

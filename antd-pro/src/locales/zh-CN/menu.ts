@@ -55,4 +55,10 @@ export default {
   'menu.components.parameter': '参数管理',
   'menu.components.oss': '文件管理',
   'menu.components.oss.test': '文件测试',
+  'menu.framework': '框架',
+  'menu.framework.dva': 'dva',
+  'menu.framework.dva.test1': '测试1',
+  'menu.framework.dva.test2': '测试2',
+  'menu.framework.bean': 'Bean',
+  'menu.framework.event': '事件',
 };
