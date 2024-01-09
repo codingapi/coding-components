@@ -4,7 +4,6 @@ codingapi-components,一个基于组件领域化开发的开源平台
 
 ## 项目模块介绍
 
-* antd-pro 前端管理系统实例
 * coding-cli 项目脚手架
 * components-docs 项目文档
 * components-server 后端模块框架
