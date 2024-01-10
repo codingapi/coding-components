@@ -7,6 +7,7 @@ import com.codingapi.components.menu.repository.MenuRepository;
 import com.codingapi.components.menu.service.MenuService;
 import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Configuration
+@ConditionalOnProperty(prefix = "codingapi.components.menu", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class MenuDomainConfiguration {
 
 

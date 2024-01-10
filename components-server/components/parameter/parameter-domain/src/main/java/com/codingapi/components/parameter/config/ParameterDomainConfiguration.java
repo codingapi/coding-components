@@ -6,11 +6,13 @@ import com.codingapi.components.parameter.repository.ParameterRepository;
 import com.codingapi.components.parameter.service.ParameterService;
 import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 
 @Configuration
+@ConditionalOnProperty(prefix = "codingapi.components.parameter", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class ParameterDomainConfiguration {
 
 

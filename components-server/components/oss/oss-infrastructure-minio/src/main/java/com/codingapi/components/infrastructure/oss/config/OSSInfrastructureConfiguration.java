@@ -4,11 +4,13 @@ import com.codingapi.components.infrastructure.oss.client.MinIOClient;
 import com.codingapi.components.infrastructure.oss.properties.OSSProperties;
 import com.codingapi.components.infrastructure.oss.repository.impl.FileRepositoryImpl;
 import com.codingapi.components.oss.repository.FileRepository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(prefix = "codingapi.components.oss", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class OSSInfrastructureConfiguration {
 
 

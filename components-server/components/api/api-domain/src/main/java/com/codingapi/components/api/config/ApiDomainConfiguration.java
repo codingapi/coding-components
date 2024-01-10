@@ -8,11 +8,13 @@ import com.codingapi.springboot.framework.dto.request.PageRequest;
 import com.codingapi.springboot.framework.dto.request.SearchRequest;
 import com.codingapi.springboot.framework.dto.response.Response;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 
 @Configuration
+@ConditionalOnProperty(prefix = "codingapi.components.api", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class ApiDomainConfiguration {
 
 

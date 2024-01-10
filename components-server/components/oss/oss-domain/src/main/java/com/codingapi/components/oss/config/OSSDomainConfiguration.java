@@ -3,6 +3,7 @@ package com.codingapi.components.oss.config;
 import com.codingapi.components.oss.domain.OSSFile;
 import com.codingapi.components.oss.repository.FileRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Configuration
+@ConditionalOnProperty(prefix = "codingapi.components.oss", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class OSSDomainConfiguration {
 
 

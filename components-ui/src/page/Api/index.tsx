@@ -5,6 +5,7 @@ import { Button, Drawer, Form, message, notification, Popconfirm } from 'antd';
 import { MyTable } from '../../components/MyTable';
 import React, { useRef, useState } from 'react';
 import Docs from './docs';
+import { Editor } from '@monaco-editor/react';
 
 interface ApiPageProps {
 
@@ -24,11 +25,17 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
   const [api, contextHolder] = notification.useNotification();
   const [readmeVisible, setReadmeVisible] = useState(false);
+  const editorRef = useRef(null);
 
   const handleAdd = async (fields: any) => {
     const hide = message.loading('正在添加');
     try {
-      await props.save({ ...fields });
+      //@ts-ignore
+      const script = editorRef.current?.getValue();
+      await props.save({ 
+        ...fields,
+        script: script
+       });
       hide();
       message.success('保存成功');
       handleModalOpen(false);
@@ -141,6 +148,8 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
             for (let key in record) {
               form.setFieldValue(key, record[key])
             }
+            // @ts-ignore
+            editorRef.current?.setValue(record.script);
             handleModalOpen(true);
           }}
         >
@@ -172,6 +181,28 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
       ],
     },
   ];
+
+
+  function handleEditorDidMount(editor:any, monaco:any) {
+    editorRef.current = editor;
+
+    //@ts-ignore
+    monaco.languages.registerCompletionItemProvider('javascript', {
+       triggerCharacters: ['$'],
+       provideCompletionItems: function(model:any, position:any) {
+            return {
+                suggestions: [
+                  {
+                    label: '$jdbc.queryForList',
+                    kind: monaco.languages.CompletionItemKind.Text,
+                    insertText: '$jdbc.queryForList({sql},{params})',
+                    }
+                ]
+            };
+       }
+
+    });
+  }
 
   return (
     <div>
@@ -313,7 +344,7 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
             name="url" />
         </ProForm.Group>
 
-        <ProFormTextArea
+        {/* <ProFormTextArea
           label="接口脚本(Groovy脚本)"
           help={<a onClick={() => setReadmeVisible(true)}>脚本手册</a>}
           fieldProps={{
@@ -326,7 +357,14 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
             },
           ]}
           placeholder="请输入接口脚本"
-          name="script" />
+          name="script" /> */}
+
+         <Editor
+             height="30vh"
+             theme="vs-dark"
+             defaultLanguage="javascript"
+             onMount={handleEditorDidMount}
+         />
 
         <ProFormSelect
           placeholder="请输入接口状态"
