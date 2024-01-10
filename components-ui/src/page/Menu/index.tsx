@@ -177,7 +177,7 @@ export const MenuPage: React.FC<MenuPageProps> = (props) => {
                                 }}
                             >
                                 <PlusOutlined /> 新建
-                            </Button>,
+                            </Button>            
                         ]}
                         request={async (params, sort, filter) => {
                             const res = await props.list({

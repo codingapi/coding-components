@@ -6,7 +6,7 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import React from 'react';
+import React, { createRef } from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { loadLayoutMenus, loadLoayoutMenuAuthentications } from './components/Menu';
 import { menus } from '@/services/api/account'
@@ -63,6 +63,17 @@ export async function getInitialState(): Promise<{
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
+
+  const layoutActionRef = createRef<{ reload: () => void }>();
+
+  //添加一个方法，用于刷新菜单的方法
+  setInitialState((preInitialState) => ({
+    ...preInitialState,
+    reloadMenu: () => {
+      layoutActionRef.current?.reload();
+    }
+  }));
+
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
@@ -74,13 +85,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     menu: {
       //https://pro.ant.design/zh-CN/docs/advanced-menu/
-      request: async (params,defaultMenuData) => {
-        try{
+      request: async (params, defaultMenuData) => {
+        try {
           const response = await menus();
           const authentications = await loadLoayoutMenuAuthentications(response);
           localStorage.setItem('authentications', JSON.stringify(authentications));
           return await loadLayoutMenus(response);
-        }catch(error){
+        } catch (error) {
           localStorage.removeItem('authentications');
           return defaultMenuData
         }
