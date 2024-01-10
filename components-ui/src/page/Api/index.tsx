@@ -9,13 +9,13 @@ import { Editor } from '@monaco-editor/react';
 
 interface ApiPageProps {
 
-    list(params:any, sort?:any, filter?:any): Promise<any>;
+  list(params: any, sort?: any, filter?: any): Promise<any>;
 
-    save(params:any): Promise<any>;
+  save(params: any): Promise<any>;
 
-    del(params:any): Promise<any>;
+  del(params: any): Promise<any>;
 
-    test(params:any): Promise<any>;
+  test(params: any): Promise<any>;
 }
 
 export const ApiPage: React.FC<ApiPageProps> = (props) => {
@@ -32,10 +32,10 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
     try {
       //@ts-ignore
       const script = editorRef.current?.getValue();
-      await props.save({ 
+      await props.save({
         ...fields,
         script: script
-       });
+      });
       hide();
       message.success('保存成功');
       handleModalOpen(false);
@@ -53,8 +53,10 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
 
   const handleTest = async (fields: any) => {
     const hide = message.loading('正在测试');
-    try {
-      const res = await props.test({ ...fields });
+    try {      
+      const res = await props.test({
+        ...fields,        
+      });
       const json = JSON.stringify(res);
       api["success"]({
         "message": json,
@@ -148,8 +150,6 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
             for (let key in record) {
               form.setFieldValue(key, record[key])
             }
-            // @ts-ignore
-            editorRef.current?.setValue(record.script);
             handleModalOpen(true);
           }}
         >
@@ -158,7 +158,7 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
         <a
           key="test"
           onClick={() => {
-            // eslint-disable-next-line guard-for-in
+            // eslint-disable-next-line guard-for-in            
             handleTest(record);
           }}
         >
@@ -183,23 +183,48 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
   ];
 
 
-  function handleEditorDidMount(editor:any, monaco:any) {
+  function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
 
     //@ts-ignore
     monaco.languages.registerCompletionItemProvider('javascript', {
-       triggerCharacters: ['$'],
-       provideCompletionItems: function(model:any, position:any) {
-            return {
-                suggestions: [
-                  {
-                    label: '$jdbc.queryForList',
-                    kind: monaco.languages.CompletionItemKind.Text,
-                    insertText: '$jdbc.queryForList({sql},{params})',
-                    }
-                ]
-            };
-       }
+      triggerCharacters: ['$'],
+      provideCompletionItems: function (model: any, position: any) {
+        return {
+          suggestions: [
+            {
+              label: '$jdbc.queryForList',
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: '$jdbc.queryForList(sql,params)',
+            },
+            {
+              label: '$jdbc.queryForPage',
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: '$jdbc.queryForPage(sql,countSQL,pageRequest,params)',
+            },
+            {
+              label: '$request.getParameter',
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: '$request.getParameter(key,defaultValue)',
+            },
+            {
+              label: '$request.pageRequest',
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: '$request.pageRequest(current,pageSize)',
+            },
+            {
+              label: '$jpa.listQuery',
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: '$jpa.listQuery(entityClass,hsql,params)',
+            },
+            {
+              label: '$jpa.pageQuery',
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: '$jpa.pageQuery(entityClass,hsql,countHsql,pageRequest,params)',
+            }
+          ]
+        };
+      }
 
     });
   }
@@ -273,7 +298,12 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
                 key="test"
                 onClick={() => {
                   const fields = form.getFieldsValue();
-                  handleTest(fields);
+                  //@ts-ignore
+                  const script = editorRef.current?.getValue();
+                  handleTest({
+                    ...fields,
+                    script
+                  });
                 }}
               >
                 测试
@@ -344,27 +374,18 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
             name="url" />
         </ProForm.Group>
 
-        {/* <ProFormTextArea
+        <ProForm.Item
           label="接口脚本(Groovy脚本)"
           help={<a onClick={() => setReadmeVisible(true)}>脚本手册</a>}
-          fieldProps={{
-            rows: 12,
-          }}
-          rules={[
-            {
-              required: true,
-              message: "请输入接口脚本",
-            },
-          ]}
-          placeholder="请输入接口脚本"
-          name="script" /> */}
-
-         <Editor
-             height="30vh"
-             theme="vs-dark"
-             defaultLanguage="javascript"
-             onMount={handleEditorDidMount}
-         />
+        >
+          <Editor
+            height="30vh"
+            theme="vs-dark"
+            defaultLanguage="javascript"
+            defaultValue={form.getFieldValue("script")}
+            onMount={handleEditorDidMount}
+          />
+        </ProForm.Item>
 
         <ProFormSelect
           placeholder="请输入接口状态"
@@ -412,7 +433,7 @@ export const ApiPage: React.FC<ApiPageProps> = (props) => {
           setReadmeVisible(false);
         }}
       >
-        <Docs/>
+        <Docs />
       </Drawer>
 
     </div >

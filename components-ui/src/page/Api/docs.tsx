@@ -68,6 +68,10 @@ const Docs: React.FC = () => {
         var res = $jpa.listQuery(com.example.entity.NodeEntity.class,"from NodeEntity");
         // 查询有条件的数据
         var res = $jpa.listQuery(com.example.entity.NodeEntity.class,"from NodeEntity where name = ?",name);
+        // 查询有条件的分页查询
+        var res = $jpa.pageQuery(com.example.entity.NodeEntity.class,"from NodeEntity where name = ?",pageRequest,name);
+        // 查询有条件的分页查询(自定义总数)
+        var res = $jpa.pageQuery(com.example.entity.NodeEntity.class,"select n from NodeEntity n where name = ?","select count(n) from NodeEntity n where name = ?",pageRequest,name);
          `}
         </code>
       </pre>
